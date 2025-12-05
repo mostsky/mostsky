@@ -1,0 +1,109 @@
+#!/system/bin/sh
+MODDIR=${0%/*}
+
+while [ "$(getprop sys.boot_completed)" != "1" ]; do
+  sleep 3
+done
+
+# settings put global adb_enabled 0
+# settings put global development_settings_enabled 0
+# resetprop ro.debuggable 0
+
+#解决log泄漏
+resetprop -n persist.logd.size ""
+resetprop -n persist.logd.size.crash ""
+resetprop -n persist.logd.size.main ""
+resetprop -n persist.log.tag ""
+
+#修复数据未加密
+resetprop ro.crypto.state encrypted
+
+#尝试通过bl弱检测
+resetprop ro.boot.flash.locked 1
+resetprop ro.boot.verifiedbootstate green
+resetprop ro.secureboot.lockstate locked
+resetprop ro.boot.vbmeta.device_state locked
+resetprop -n init.svc.adbd stopped
+resetprop -w sys.boot_completed 0
+
+
+
+
+
+
+# 删除 模块文件夹
+rm -rf /data/adb/modules/most_sky/apk
+rm -rf /data/adb/modules/most_sky/MostSky
+
+# 删除 TWRP 文件夹，清理残留
+rm -rf /data/media/0/TWRP
+rm -r /storage/emulated/0/TWRP
+
+rm -rf /data/local/tmp/shizuku/
+rm -rf /data/local/tmp/shizuku_starter
+rm -f /data/local/tmp/shizuku/
+rm -f /data/local/tmp/shizuku_starter
+
+#删除 MT2 文件夹
+rm -rf //storage/emulated/0/MT2
+
+
+
+
+# 开机后自动禁用 DM-Verity 和启动校检
+avbctl disable-verity --force
+avbctl disable-verification --force
+
+
+
+sh /data/adb/modules/MostSky/删除target游戏包名.sh
+
+
+#!/system/bin/sh
+
+# 目标配置文件路径
+CONFIG_FILE="/data/user/0/org.frknkrc44.hma_oss/files/config.json"
+
+# 隐藏应用列表配置内容
+NEW_CONFIG='{"configVersion":93,"detailLog":false,"maxLogSize":512,"forceMountData":true,"disableActivityLaunchProtection":false,"altAppDataIsolation":false,"altVoldAppDataIsolation":false,"skipSystemAppDataIsolation":true,"packageQueryWorkaround":false,"templates":{"莫晨一键隐藏环境":{"isWhitelist":false,"appList":["com.feilun.main","Han.GJZS","tmgp.atlas.toolbox","com.accessibilitymanager","web1n.stopapp","com.daxiaamu.op7mutools","com.surcumference.fingerprintpay","li.songe.gkd","org.frknkrc44.hma_oss","com.guoshi.httpcanary","com.github.capntrips.kernelflasher","io.github.a13e300.ksuwebui","org.telegram.messenger.web","com.omarea.vtools","chunqiu.safe.detector","com.bwnc.zcj","com.time.tools","com.github.dan.NoStorageRestrict","com.virb3.trustmealready","com.sukisu.ultra"]}},"scope":{"chunqiu.safe.detector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.tencent.tmgp.pubgmhd":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.tencent.jkchess":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.bajiaostar.findjob":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.surcumference.fingerprintpay":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["xposed"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"icu.nullptr.applistdetector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.youhu.laifu":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps","sus_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"li.songe.gkd":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["root_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"me.garfieldhan.holmes":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps","sus_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.zhenxi.hunter":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"luna.safe.luna":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.lingqing.detector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"io.github.huskydg.memorydetector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"io.github.vvb2060.mahoshojo":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.reveny.nativecheck":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"icu.nullptr.nativetest":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.MobileTicket":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.yitong.mbank.psbc":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.eg.android.AlipayGphone":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.sankuai.meituan":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom","detector_apps"],"applySettingsPresets":[],"extraAppList":[]},"Han.GJZS":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom","detector_apps","root_apps","shizuku_dhizuku","sus_apps","xposed"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.omarea.vtools":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["root_apps","shizuku_dhizuku","sus_apps","xposed"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.byxiaorun.detector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps","sus_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"org.telegram.messenger.web":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps","sus_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"wu.Zygisk.Detector":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["detector_apps","sus_apps"],"applySettingsPresets":[],"extraAppList":[]},"com.virb3.trustmealready":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["xposed"],"applySettingsPresets":[],"extraAppList":[]},"com.github.dan.NoStorageRestrict":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":false,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["xposed"],"applySettingsPresets":[],"extraAppList":[]},"com.accessibilitymanager":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["root_apps","sus_apps"],"applySettingsPresets":[],"extraAppList":[]},"com.bwnc.zcj":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["sus_apps"],"applySettingsPresets":[],"extraAppList":[]},"com.feilun.main":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["sus_apps"],"applySettingsPresets":[],"extraAppList":[]},"com.hicorenational.antifraud":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"tmgp.atlas.toolbox":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["root_apps","sus_apps"],"applySettingsPresets":[],"extraAppList":[]},"com.bilibili.studio":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom","detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.coloros.alarmclock":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom","detector_apps"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]},"com.unionpay.tsmservice":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":false,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["custom_rom"],"applySettingsPresets":[],"extraAppList":[]},"com.sukisu.ultra":{"useWhitelist":false,"excludeSystemApps":true,"hideInstallationSource":true,"hideSystemInstallationSource":true,"excludeTargetInstallationSource":true,"invertActivityLaunchProtection":true,"applyTemplates":["莫晨一键隐藏环境"],"applyPresets":["root_apps","sus_apps","xposed"],"applySettingsPresets":["accessibility","dev_options"],"extraAppList":[]}}}'
+
+echo "$NEW_CONFIG" > "$CONFIG_FILE"
+echo "隐藏应用列表配置成功！"
+
+
+cp -rf /data/adb/modules/MostSky/keybox.xml /data/adb/tricky_store/keybox.xml
+
+echo "keybox更新成功"
+
+
+
+#!/bin/bash
+PROPS=(
+  "ro.boot.flash.locked=1" "ro.boot.verifiedbootstate=green"
+  "ro.boot.vbmeta.device_state=locked"
+  "ro.secureboot.lockstate=locked" "ro.boot.realmebootstate=green"
+  "ro.boot.realme.lockstate=1" "ro.secure=1"
+  "ro.adb.secure=1" "ro.build.type=user"
+  "ro.build.tags=release-keys" "ro.warranty_bit=0"
+  "ro.vendor.warranty_bit=0" "vendor.boot.vbmeta.device_state=locked"
+  "vendor.boot.verifiedbootstate=green" "sys.oem_unlock_allowed=0"
+)
+for prop in "${PROPS[@]}"; do
+  NAME=${prop%=*}
+  EXPECTED=${prop#*=}
+  [ "$(resetprop $NAME)" != "$EXPECTED" ] && resetprop $NAME $EXPECTED
+done
+if [ -n "$(settings get global hidden_api_policy 2>/dev/null)" ] || \
+   [ -n "$(settings get global hidden_api_blacklist_exemptions 2>/dev/null)" ]; then
+  settings delete global hidden_api_policy{,_p_apps,_pre_p_apps}
+  settings delete global hidden_api_blacklist_exemptions{,s_exe} 2>/dev/null
+fi
+resetprop -n persist.logd.size{,,.crash,.main} ""
+[ "$(getprop ro.crypto.state)" != "encrypted" ] && resetprop ro.crypto.state encrypted
+IS_VM=0
+[ -x "$(command -v dmidecode)" ] && dmidecode -s system-product-name | grep -qE "VMware|VirtualBox|KVM|QEMU" && IS_VM=1
+[[ $(df -h /sdcard 2>/dev/null | awk 'NR==2 {print $3}' | sed 's/G$//') -le 10 ]] && IS_VM=1
+[ "$(getenforce)" = "Permissive" ] && [ $IS_VM -eq 0 ] && setenforce 1
+for boot_prop in "ro.bootmode" "ro.boot.bootmode" "vendor.boot.bootmode"; do
+  [[ "$(resetprop $boot_prop)" = "recovery" ]] && resetprop $boot_prop unknown
+done
